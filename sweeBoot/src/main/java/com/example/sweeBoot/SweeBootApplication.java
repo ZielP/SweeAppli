@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SweeBootApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SweeBootApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SweeBootApplication.class, args);
+    }
 
 }
