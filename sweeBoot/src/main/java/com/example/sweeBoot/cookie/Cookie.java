@@ -1,11 +1,25 @@
 package com.example.sweeBoot.cookie;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table
 public class Cookie {
 
+    @Id
+    @SequenceGenerator(
+            name = "cookie_sequence",
+            sequenceName = "cookie_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "cookie_sequence"
+    )
     Long id;
     String name;
+    @ElementCollection(targetClass = String.class)
     List<String> ingredients;
     String recipe;
 
