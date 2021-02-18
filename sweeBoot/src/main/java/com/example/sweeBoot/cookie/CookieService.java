@@ -28,13 +28,10 @@ public class CookieService {
         cookieRepository.save(cookie);
     }
 
-//    public List<Cookie> getCookies() {
-//        return List.of(new Cookie(
-//                        1L,
-//                        "Biscuit",
-//                        List.of("sugar", "milk"),
-//                        "Stir them all!"
-//                )
-//        );
-//    }
+    public void deleteCookieById(Long cookieId) {
+        boolean existsById = cookieRepository.existsById(cookieId);
+        if(!existsById) throw new IllegalStateException("Cookie wit id " + cookieId + "does not exist");
+
+        cookieRepository.deleteById(cookieId);
+    }
 }

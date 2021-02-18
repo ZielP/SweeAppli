@@ -26,4 +26,9 @@ public class CookieController {
         cookieService.addNewCookie(cookie);
     }
 
+    @DeleteMapping(path = "{cookieId}" )
+    public void deleteCookie(@PathVariable Long cookieId){
+        cookieService.deleteCookieById(cookieId);
+    }
+
 }
