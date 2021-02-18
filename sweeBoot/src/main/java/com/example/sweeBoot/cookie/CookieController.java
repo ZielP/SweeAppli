@@ -21,6 +21,11 @@ public class CookieController {
         return cookieService.getCookies();
     }
 
+    @GetMapping(path = "{cookieId}")
+    public List<Cookie> getCookie(@PathVariable Long cookieId){
+        return cookieService.getCookieById(cookieId);
+    }
+
     @PostMapping
     public void postNewCookie(@RequestBody Cookie cookie){
         cookieService.addNewCookie(cookie);

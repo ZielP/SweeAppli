@@ -3,6 +3,7 @@ package com.example.sweeBoot.cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class CookieService {
         return cookieRepository.findAll();
     }
 
+    public List<Cookie> getCookieById(Long cookieId) {
+        return cookieRepository.findAllById(Collections.singleton(cookieId));
+    }
+
     public void addNewCookie(Cookie cookie) {
         Optional<Cookie> cookieOptional = cookieRepository.findCookieByName(cookie.getName());
         if(cookieOptional.isPresent()) throw new IllegalStateException("Name taken");
@@ -30,7 +35,7 @@ public class CookieService {
 
     public void deleteCookieById(Long cookieId) {
         boolean existsById = cookieRepository.existsById(cookieId);
-        if(!existsById) throw new IllegalStateException("Cookie wit id " + cookieId + "does not exist");
+        if(!existsById) throw new IllegalStateException("Cookie with id " + cookieId + " does not exist");
 
         cookieRepository.deleteById(cookieId);
     }
