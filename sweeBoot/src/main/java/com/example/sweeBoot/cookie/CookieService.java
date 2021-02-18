@@ -3,6 +3,7 @@ package com.example.sweeBoot.cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +39,31 @@ public class CookieService {
         if(!existsById) throw new IllegalStateException("Cookie with id " + cookieId + " does not exist");
 
         cookieRepository.deleteById(cookieId);
+    }
+
+    @Transactional
+    public void updateCookie(Long cookieId, String name, List<String> ingredients, String recipe) {
+        Cookie cookie = cookieRepository.findById(cookieId).orElseThrow(() -> new IllegalStateException("Cookie with id " + cookieId + " does not exist"));
+
+//        Couldn't use !Object.equals(cookie.getName(), name)
+        String nameOfCookie = cookie.getName();
+        boolean areNameEquals = nameOfCookie.equals(name);
+        if(name != null && name.trim().length() > 0 && !areNameEquals){
+            Optional<Cookie> cookieOptional = cookieRepository.findCookieByName(name);
+            if (cookieOptional.isPresent()) throw new IllegalStateException("Name taken");
+
+            cookie.setName(name);
+        }
+
+//        needs more
+        if (ingredients != null){
+            cookie.setIngredients(ingredients);
+        }
+
+        String recipeOfCookie = cookie.getRecipe();
+        boolean areRecipesEquals = recipeOfCookie.equals(recipe);
+        if(recipe != null && recipe.trim().length() > 0 && !areRecipesEquals){
+            cookie.setRecipe(recipe);
+        }
     }
 }

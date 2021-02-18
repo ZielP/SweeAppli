@@ -31,6 +31,14 @@ public class CookieController {
         cookieService.addNewCookie(cookie);
     }
 
+    @PutMapping(path = "{cookieId}")
+    public void updateCookie(@PathVariable Long cookieId,
+                             @RequestParam (required = false) String name,
+                             @RequestParam (required = false) List<String> ingredients,
+                             @RequestParam (required = false) String recipe){
+        cookieService.updateCookie(cookieId, name, ingredients, recipe);
+    }
+
     @DeleteMapping(path = "{cookieId}" )
     public void deleteCookie(@PathVariable Long cookieId){
         cookieService.deleteCookieById(cookieId);
