@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CookieService {
@@ -19,7 +20,7 @@ public class CookieService {
     }
 
 
-    public List<Cookie> getCookies(){
+    public List<Cookie> getCookies() {
         return cookieRepository.findAll();
     }
 
@@ -29,14 +30,14 @@ public class CookieService {
 
     public void addNewCookie(Cookie cookie) {
         Optional<Cookie> cookieOptional = cookieRepository.findCookieByName(cookie.getName());
-        if(cookieOptional.isPresent()) throw new IllegalStateException("Name taken");
+        if (cookieOptional.isPresent()) throw new IllegalStateException("Name taken");
 
         cookieRepository.save(cookie);
     }
 
     public void deleteCookieById(Long cookieId) {
         boolean existsById = cookieRepository.existsById(cookieId);
-        if(!existsById) throw new IllegalStateException("Cookie with id " + cookieId + " does not exist");
+        if (!existsById) throw new IllegalStateException("Cookie with id " + cookieId + " does not exist");
 
         cookieRepository.deleteById(cookieId);
     }
@@ -48,21 +49,31 @@ public class CookieService {
 //        Couldn't use !Object.equals(cookie.getName(), name)
         String nameOfCookie = cookie.getName();
         boolean areNameEquals = nameOfCookie.equals(name);
-        if(name != null && name.trim().length() > 0 && !areNameEquals){
+        if (name != null && name.trim().length() > 0 && !areNameEquals) {
             Optional<Cookie> cookieOptional = cookieRepository.findCookieByName(name);
             if (cookieOptional.isPresent()) throw new IllegalStateException("Name taken");
 
             cookie.setName(name);
         }
 
-//        needs more
-        if (ingredients != null){
-            cookie.setIngredients(ingredients);
+        if (!ingredients.isEmpty()) {
+            List<String> ingredientsWithoutEmptyStrings = ingredients.stream()
+                    .filter(x -> !x.matches(""))
+                    .collect(Collectors.toList());
+
+            List<String> ingredientsOfCookie = cookie.getIngredients();
+            Collections.sort(ingredientsOfCookie);
+            Collections.sort(ingredientsWithoutEmptyStrings);
+
+            if (ingredientsOfCookie.containsAll(ingredientsWithoutEmptyStrings))
+                throw new IllegalStateException("The ingredients are the same as before");
+
+            cookie.setIngredients(ingredientsWithoutEmptyStrings);
         }
 
         String recipeOfCookie = cookie.getRecipe();
         boolean areRecipesEquals = recipeOfCookie.equals(recipe);
-        if(recipe != null && recipe.trim().length() > 0 && !areRecipesEquals){
+        if (recipe != null && recipe.trim().length() > 0 && !areRecipesEquals) {
             cookie.setRecipe(recipe);
         }
     }
