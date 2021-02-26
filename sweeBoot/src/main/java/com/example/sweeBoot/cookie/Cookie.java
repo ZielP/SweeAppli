@@ -21,6 +21,7 @@ public class Cookie {
     String name;
     @ElementCollection(targetClass = String.class)
     List<String> ingredients;
+    @Column(columnDefinition = "TEXT")
     String recipe;
 
     public Cookie() {
