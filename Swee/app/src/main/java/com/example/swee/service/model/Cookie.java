@@ -7,4 +7,20 @@ public class Cookie {
     private String name;
     private List<String> ingredients;
     private String recipe;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public String getRecipe() {
+        return recipe;
+    }
 }
