@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CookieListAdapter extends RecyclerView.Adapter<CookieListAdapter.MyViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<Cookie> cookieList;
 
     public CookieListAdapter(Context context, List<Cookie> cookieList) {
@@ -26,7 +26,6 @@ public class CookieListAdapter extends RecyclerView.Adapter<CookieListAdapter.My
         this.cookieList = cookieList;
     }
 
-    //for update
     public void SetCookieList(List<Cookie> cookieList) {
         this.cookieList = cookieList;
         notifyDataSetChanged();
@@ -42,7 +41,7 @@ public class CookieListAdapter extends RecyclerView.Adapter<CookieListAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull CookieListAdapter.MyViewHolder holder, int position) {
-        holder.cookieName.setText(this.cookieList.get(position).getName().toString());
+        holder.cookieName.setText(this.cookieList.get(position).getName());
         /*
         For images
         Glide.with(context).load(this.cookieList.get(position).getImage())
@@ -59,12 +58,12 @@ public class CookieListAdapter extends RecyclerView.Adapter<CookieListAdapter.My
         return 0;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView cookieName;
 
         public MyViewHolder(View viewItem) {
             super(viewItem);
-            cookieName = (TextView) viewItem.findViewById(R.id.nameView);
+            cookieName = viewItem.findViewById(R.id.nameView);
         }
     }
 }

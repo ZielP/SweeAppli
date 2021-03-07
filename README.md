@@ -3,7 +3,7 @@ Custom Rest API with cookies recipes that are stored in a local MySQL database. 
 
 ## Progres:
 - API - Completed. Maybe in the future, I'll expand the structure once the Android application is complete.
-- Android app - Working on.
+- Android app - **Working on**. Added simple GET request and display the title of each element using the MVVM pattern with Retrofit.
 
 ## About API
 

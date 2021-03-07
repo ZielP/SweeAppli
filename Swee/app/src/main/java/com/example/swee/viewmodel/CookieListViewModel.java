@@ -1,5 +1,7 @@
 package com.example.swee.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -21,22 +23,28 @@ public class CookieListViewModel extends ViewModel {
         this.cookiesList = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Cookie>> getCookieObserver(){
+    public MutableLiveData<List<Cookie>> getCookieObserver() {
         return cookiesList;
     }
 
-    public void makeApiCall(){
+    public void makeApiCall() {
         CookieService cookieService = RetrofitInstance.getRetrofit().create(CookieService.class);
         Call<List<Cookie>> call = cookieService.getCookiesList();
         call.enqueue(new Callback<List<Cookie>>() {
             @Override
             public void onResponse(Call<List<Cookie>> call, Response<List<Cookie>> response) {
-                cookiesList.postValue(response.body());
+                Log.v("ResponseChceck", "Is response successful: " + response.isSuccessful());
+                if (response.isSuccessful()) {
+                    cookiesList.postValue(response.body());
+                } else {
+                    cookiesList.postValue(null);
+                }
             }
 
             @Override
             public void onFailure(Call<List<Cookie>> call, Throwable t) {
                 cookiesList.postValue(null);
+                Log.v("OnFailureCheck" , "Throw: " +t.toString());
             }
         });
     }

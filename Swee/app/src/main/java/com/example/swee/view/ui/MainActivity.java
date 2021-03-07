@@ -1,12 +1,13 @@
 package com.example.swee.view.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,17 +38,15 @@ public class MainActivity extends AppCompatActivity {
         cookieListAdapter = new CookieListAdapter(this, cookieList);
         recyclerView.setAdapter(cookieListAdapter);
 
-        CookieListViewModel viewModel = ViewModelProviders.of(this).get(CookieListViewModel.class);
-        viewModel.getCookieObserver().observe(this, new Observer<List<Cookie>>() {
-            @Override
-            public void onChanged(List<Cookie> cookies) {
-                if (cookies != null) {
-                    cookieList = cookies;
-                    cookieListAdapter.SetCookieList(cookies);
-                    noResultView.setVisibility(View.GONE);
-                } else {
-                    noResultView.setVisibility(View.VISIBLE);
-                }
+//        CookieListViewModel viewModel = ViewModelProviders.of(this).get(CookieListViewModel.class);
+        CookieListViewModel viewModel = new ViewModelProvider(this).get(CookieListViewModel.class);
+        viewModel.getCookieObserver().observe(this, cookies -> {
+            if (cookies != null) {
+                cookieList = cookies;
+                cookieListAdapter.SetCookieList(cookies);
+                noResultView.setVisibility(View.GONE);
+            } else {
+                noResultView.setVisibility(View.VISIBLE);
             }
         });
         viewModel.makeApiCall();
